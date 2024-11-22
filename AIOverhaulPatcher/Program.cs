@@ -5,7 +5,6 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Synthesis;
 using Mutagen.Bethesda.Skyrim;
 using AIOverhaulPatcher.Utilities;
-using AIOverhaulPatcher.Settings;
 using Noggog;
 using System.Threading.Tasks;
 using Mutagen.Bethesda.Plugins; 
@@ -14,7 +13,7 @@ namespace AIOverhaulPatcher
 {
     public class Program
     {
-        private static Lazy<Settings.Settings> _settings = null!;
+        private static Lazy<Settings> _settings = null!;
         const string AioPatchName = "AIOPatch.esp";
         public static Task<int> Main(string[] args)
         {
@@ -87,13 +86,23 @@ namespace AIOverhaulPatcher
                 bool change = false;
 
                 var patchNpc = state.PatchMod.Npcs.GetOrAddAsOverride(winningOverride);
-                if (npc.IsProtected() && !(patchNpc.IsProtected() || (patchNpc.IsEssential() && _settings.Value.MaintainHighestProtectionLevel)))
+
+                // TODO: Forward Doesn't effect stealth meter
+
+                if (!_settings.Value.PatchProtectionLevel)
                 {
-                    patchNpc.Configuration.Flags = patchNpc.Configuration.Flags.SetFlag(NpcConfiguration.Flag.Protected, true);
-                    change = true;
-
-
+                    if (npc.IsProtected() != patchNpc.IsProtected())
+                    {
+                        patchNpc.Configuration.Flags = patchNpc.Configuration.Flags.SetFlag(NpcConfiguration.Flag.Protected, npc.IsProtected());
+                        change = true;
+                    }
+                    else if (npc.IsEssential() != patchNpc.IsEssential())
+                    {
+                        patchNpc.Configuration.Flags = patchNpc.Configuration.Flags.SetFlag(NpcConfiguration.Flag.Essential, npc.IsEssential());
+                        change = true;
+                    }
                 }
+
                 foreach (var fac in npc.Factions)
                     if (!patchNpc.Factions.Select(x => new KeyValuePair<FormKey, int>(x.Faction.FormKey, x.Rank)).Contains(new KeyValuePair<FormKey, int>(fac.Faction.FormKey, fac.Rank)))
                     {
