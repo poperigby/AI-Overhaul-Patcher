@@ -206,6 +206,12 @@ namespace AIOverhaulPatcher
                     change = true;
                 }
 
+                if (npc.AIData.Assistance != patchNpc.AIData.Assistance)
+                {
+                    patchNpc.AIData.Assistance = npc.AIData.Assistance;
+                    change = true;
+                }
+
                 if (npc.CombatStyle != patchNpc.CombatStyle)
                 {
                     patchNpc.CombatStyle.SetTo(npc.CombatStyle);
