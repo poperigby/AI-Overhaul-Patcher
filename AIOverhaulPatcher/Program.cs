@@ -96,7 +96,8 @@ namespace AIOverhaulPatcher
                         patchNpc.Configuration.Flags = patchNpc.Configuration.Flags.SetFlag(NpcConfiguration.Flag.Protected, npc.IsProtected());
                         change = true;
                     }
-                    else if (npc.IsEssential() != patchNpc.IsEssential())
+
+                    if (npc.IsEssential() != patchNpc.IsEssential())
                     {
                         patchNpc.Configuration.Flags = patchNpc.Configuration.Flags.SetFlag(NpcConfiguration.Flag.Essential, npc.IsEssential());
                         change = true;
