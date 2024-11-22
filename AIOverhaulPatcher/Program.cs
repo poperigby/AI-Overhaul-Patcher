@@ -196,10 +196,20 @@ namespace AIOverhaulPatcher
 
                 if (npc.AIData.Confidence != patchNpc.AIData.Confidence)
                 {
-                    patchNpc.AIData.Confidence = (Confidence)Math.Min((int)patchNpc.AIData.Confidence, (int)npc.AIData.Confidence);
+                    patchNpc.AIData.Confidence = npc.AIData.Confidence;
                     change = true;
+                }
 
+                if (npc.AIData.Aggression != patchNpc.AIData.Aggression)
+                {
+                    patchNpc.AIData.Aggression = npc.AIData.Aggression;
+                    change = true;
+                }
 
+                if (npc.CombatStyle != patchNpc.CombatStyle)
+                {
+                    patchNpc.CombatStyle.SetTo(npc.CombatStyle);
+                    change = true;
                 }
 
 
