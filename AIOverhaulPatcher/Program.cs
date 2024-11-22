@@ -89,7 +89,7 @@ namespace AIOverhaulPatcher
 
                 // TODO: Forward Doesn't effect stealth meter
 
-                if (!_settings.Value.PatchProtectionLevel)
+                if (_settings.Value.PatchProtectionLevel)
                 {
                     if (npc.IsProtected() != patchNpc.IsProtected())
                     {
